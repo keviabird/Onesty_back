@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileServiceImpl implements FileService {
     @Override
     public String uploadFile(MultipartFile file) {
-        return null;
+        return "";
     }
 
     @Override
