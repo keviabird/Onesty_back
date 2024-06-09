@@ -1,0 +1,66 @@
+@startuml
+
+actor Клиент
+participant "Мобильное приложение" as App
+participant "BFF" as BFF
+participant "user-service" as UserService
+database "MongoDB" as MongoDB
+
+== Сценарий 1: Пользователь проходит онбординг посредством ответов на вопросы в чат ==
+Клиент -> App: Отправка ответов на вопросы
+App -> BFF: POST /users (создание пользователя)
+BFF -> UserService: POST /users
+UserService -> MongoDB: Сохранить нового пользователя
+note right of MongoDB: Генерация id в формате GUID
+MongoDB --> UserService: Подтверждение сохранения с id
+UserService --> BFF: Результат создания
+BFF --> App: Результат создания
+App -> BFF: PATCH /users/{id} (обновление после ответа)
+BFF -> UserService: PATCH /users/{id}
+UserService -> MongoDB: Обновить пользователя
+MongoDB --> UserService: Подтверждение обновления
+UserService --> BFF: Результат обновления
+BFF --> App: Результат обновления
+... повторяется для каждого ответа ...
+
+== Сценарий 2: Пользователь получает свой профиль ==
+Клиент -> App: Запрос на получение своего профиля
+App -> BFF: GET /users/{id}
+BFF -> UserService: GET /users/{id}
+UserService -> MongoDB: Получить данные пользователя
+MongoDB --> UserService: Профиль пользователя
+UserService --> BFF: Профиль пользователя
+BFF --> App: Профиль пользователя
+App --> Клиент: Профиль пользователя
+
+== Сценарий 3: Пользователь получает чужой профиль ==
+Клиент -> App: Запрос на получение чужого профиля
+App -> BFF: GET /users/{id}
+BFF -> UserService: GET /users/{id}
+UserService -> MongoDB: Получить данные пользователя
+MongoDB --> UserService: Профиль пользователя
+UserService --> BFF: Профиль пользователя
+BFF --> App: Профиль пользователя
+App --> Клиент: Профиль пользователя
+
+== Сценарий 4: Пользователь редактирует свой профиль ==
+Клиент -> App: Изменение профиля
+App -> BFF: PATCH /users/{id}
+BFF -> UserService: PATCH /users/{id}
+UserService -> MongoDB: Обновить данные пользователя
+MongoDB --> UserService: Подтверждение обновления
+UserService --> BFF: Результат изменения
+BFF --> App: Результат изменения
+App --> Клиент: Результат изменения
+
+== Сценарий 5: Пользователь удаляет свой профиль ==
+Клиент -> App: Удаление профиля
+App -> BFF: DELETE /users/{id}
+BFF -> UserService: DELETE /users/{id}
+UserService -> MongoDB: Удалить пользователя
+MongoDB --> UserService: Подтверждение удаления
+UserService --> BFF: Результат удаления
+BFF --> App: Результат удаления
+App --> Клиент: Результат удаления
+
+@enduml

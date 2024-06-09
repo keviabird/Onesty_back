@@ -1,0 +1,683 @@
+openapi: 3.0.0
+info:
+  title: Backend APIs
+  description: APIs for the iOS app
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /users/{userId}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /categories/{categoryId}:
+    get:
+      summary: Get category by ID
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /categories/{categoryId}/rubrics:
+    get:
+      summary: Get rubrics by category ID
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rubric'
+  /categories/{categoryId}/tests:
+    get:
+      summary: Get tests by category ID
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /tests/{testId}/questions:
+    get:
+      summary: Get questions by test ID
+      parameters:
+        - in: path
+          name: testId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /questions/{questionId}/answers:
+    get:
+      summary: Get answers by question ID
+      parameters:
+        - in: path
+          name: questionId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Answer'
+  /categoryresults/{categoryResultId}:
+    get:
+      summary: Get full category result by ID
+      parameters:
+        - in: path
+          name: categoryResultId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullCategoryResult'
+  /users/{userId}/categoryresults:
+    get:
+      summary: Get category results by user ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResult'
+  /users/{userId}/testsdomain:
+    get:
+      summary: Get tests domain by user ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestsDomain'
+  /users/{userId}/tests/{testId}:
+    get:
+      summary: Get full test by user ID and test ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: testId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullTest'
+              
+  /users/{userId}/tests/{testId}/full:
+    get:
+      summary: Get full test by user ID and test ID with answers
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: testId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullTestWithAnswers'
+                
+  /users/{userId}/tests/{testId}/saveAnswers:
+    post:
+      summary: Save answers for a test
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: testId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      questionId:
+                        type: integer
+                        format: int64
+                      answerId:
+                        type: integer
+                        format: int64
+              required:
+                - questionId
+                - answerId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /users:
+    post:
+      summary: Create a new user
+      description: Register a new user in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+  /users/update/{userId}:
+    patch:
+      summary: Update user profile
+      description: Edit the profile information of an existing user.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          
+  /users/{userId}/tests/{testId}/testCard:
+    get:
+      summary: Get test card by user ID and test ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: testId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCard'
+
+components:
+  schemas:
+    FullTestWithAnswers:
+      type: object
+      properties:
+        answeredQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionWithAnswers'
+        nonAnsweredQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionWithAnswers'
+      required:
+        - answeredQuestions
+        - nonAnsweredQuestions
+    QuestionWithAnswers:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        value:
+          type: string
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        answeredId:
+          type: integer
+          format: int64
+      required:
+        - id
+        - value
+        - answers
+        - answeredId
+    AnsweredQuestion:
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int64
+        answerId:
+          type: integer
+          format: int64
+      required:
+        - questionId
+        - answerId
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+    Rubric:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+        categoryId:
+          type: integer
+          format: int64
+    Test:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+        status:
+          type: string
+        questionCount:
+          type: integer
+          format: int32
+        answersCount:
+          type: integer
+          format: int32
+        isLocked:
+          type: boolean
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        value:
+          type: string
+        testId:
+          type: integer
+          format: int64
+    Answer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        value:
+          type: string
+        questionId:
+          type: integer
+          format: int64
+    Parameter:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    CategoryResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        content:
+          type: string
+    CategoryResultWithParameters:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        content:
+          type: string
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+    FullCategoryResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        content:
+          type: string
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Answer'
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parameter'
+    AnsweredQuestionsIds:
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int64
+        answeredId:
+          type: integer
+          format: int64
+    FullTest:
+      type: object
+      properties:
+        answeredQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+        nonAnsweredQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+        questionAndAnswers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsweredQuestionsIds'
+    TestsDomain:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryShort'
+    CategoryShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+        rubrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/RubricShort'
+    RubricShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestShort'
+    TestShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        imageUrl:
+          type: string
+        status:
+          type: string
+        questionCount:
+          type: integer
+          format: int32
+        answersCount:
+          type: integer
+          format: int32
+        isLocked:
+          type: boolean
+    TestCard:
+      type: object
+      properties:
+        firstValue:
+          type: string
+        imageUrl:
+          type: string
+        secondValue:
+          type: string
+        description:
+          type: object
+          properties:
+            value:
+              type: string
+            parameterInfo:
+              type: array
+              items:
+                type: object
+                properties:
+                  value:
+                    type: string
+                  score:
+                    type: integer
+                  color:
+                    type: string
+    UserBase:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          type: string
+        age:
+          type: integer
+        height:
+          type: integer
+        weight:
+          type: integer
+        location:
+          type: string
+        profileName:
+          type: string
+        occupation:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        education:
+          type: string
+        children:
+          type: string
+        relationship:
+          type: string
+        sports:
+          type: string
+        alcohol:
+          type: string
+        smoking:
+          type: string
+        drugs:
+          type: string
+        activity:
+          type: string
+        aboutMe:
+          type: string
+        photos:
+          type: array
+          items:
+            type: string
+            format: uri
+            maxItems: 5
+    UserCreate:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+      required:
+        - name
+        - gender
+        - age
+        - height
+        - weight
+        - location
+        - profileName
+        - occupation
+        - languages
+        - education
+        - children
+        - relationship
+    UserUpdate:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+    User:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+      properties:
+        userId:
+          type: string

@@ -1,0 +1,18 @@
+@startuml
+
+package "Мобильное приложение" {
+  [Клиент] -> [App]
+}
+
+package "BFF" {
+  [App] -> [BFF]
+}
+
+package "Backend" {
+  [BFF] -> [user-service]
+  [user-service] -> [MongoDB]
+}
+
+database "MongoDB" as Mongo
+
+@enduml
