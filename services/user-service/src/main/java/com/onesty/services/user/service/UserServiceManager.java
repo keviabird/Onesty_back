@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 
@@ -19,15 +20,13 @@ import static java.time.LocalDateTime.now;
 public class UserServiceManager implements UserService {
 
     private static final String NOT_FOUND_PREFIX = "No user found for userId: ";
-    private Long sequence = 1l;
 
     private final UserRepository repository;
     private final UserMapper mapper;
 
     public User createUser(User user) {
+        user.setUserId(UUID.randomUUID().toString());
         UserEntity userEntity = mapper.apiToEntity(user);
-        userEntity.setUserId(sequence);
-        sequence++;
         LocalDateTime now = LocalDateTime.now();
         userEntity.setCreatedAt(now);
         userEntity.setUpdatedAt(now);
@@ -55,7 +54,7 @@ public class UserServiceManager implements UserService {
                     userEntity.setGender((String) value);
                     break;
                 case "age":
-                    userEntity.setAge((Integer) value);
+                    userEntity.setAge((LocalDateTime) value);
                     break;
                 case "height":
                     userEntity.setHeight((Integer) value);

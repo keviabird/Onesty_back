@@ -33,5 +33,5 @@ public class User {
     private String activity;
     private String aboutMe;
     private List<String> photos;
-    private List<String> fieldsToShow;
+    private List<String> fieldsToHide;
 }

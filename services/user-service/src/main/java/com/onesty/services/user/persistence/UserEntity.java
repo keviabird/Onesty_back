@@ -24,10 +24,10 @@ public class UserEntity {
     @Version
     private Integer version;
     @Indexed(unique = true)
-    private Long userId;
+    private String userId;
     private String name;
     private String gender;
-    private Integer age;
+    private LocalDateTime age;
     private Integer height;
     private Integer weight;
     private String location;
@@ -43,6 +43,7 @@ public class UserEntity {
     private String activity;
     private String aboutMe;
     private List<String> photos;
+    private List<String> fieldsToHide;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

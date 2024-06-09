@@ -28,6 +28,7 @@ public interface UserService {
 
     @PatchMapping(
             value = "users/{userId}",
+            consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
     User updateUser(@RequestBody Map<String, Object> updates,
@@ -35,6 +36,7 @@ public interface UserService {
 
     @DeleteMapping(
             value = "users/{userId}",
+            consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
     void deleteUser(@PathVariable String userId);
