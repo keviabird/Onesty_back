@@ -35,14 +35,14 @@ public class UserServiceManager implements UserService {
         return mapper.entityToApi(saved);
     }
 
-    public User getUser(Long userId) {
+    public User getUser(String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
         if (userEntity.getDeletedAt() != null) throw new NotFoundException(NOT_FOUND_PREFIX + userId);
         return mapper.entityToApi(userEntity);
     }
 
-    public User updateUser(Map<String, Object> updates, Long userId) {
+    public User updateUser(Map<String, Object> updates, String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
 
@@ -111,7 +111,7 @@ public class UserServiceManager implements UserService {
         return mapper.entityToApi(saved);
     }
 
-    public void deleteUser(Long userId) {
+    public void deleteUser(String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
         userEntity.setDeletedAt(now());
