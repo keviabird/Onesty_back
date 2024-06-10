@@ -8,6 +8,7 @@ import com.onesty.services.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class UserServiceManager implements UserService {
                     userEntity.setGender((String) value);
                     break;
                 case "age":
-                    userEntity.setAge((LocalDateTime) value);
+                    userEntity.setAge(((Timestamp) value).toLocalDateTime());
                     break;
                 case "height":
                     userEntity.setHeight((Integer) value);
@@ -100,6 +101,9 @@ public class UserServiceManager implements UserService {
                     break;
                 case "photos":
                     userEntity.setPhotos((List<String>) value);
+                    break;
+                case "fieldsToHide":
+                    userEntity.setFieldsToHide((List<String>) value);
                     break;
                 default:
                     break;
