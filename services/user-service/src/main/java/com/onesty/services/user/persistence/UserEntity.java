@@ -27,7 +27,7 @@ public class UserEntity {
     private String userId;
     private String name;
     private String gender;
-    private LocalDateTime age;
+    private LocalDateTime birthdate;
     private Integer height;
     private Integer weight;
     private String location;

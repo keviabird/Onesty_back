@@ -5,6 +5,8 @@ import com.onesty.services.user.persistence.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
@@ -14,5 +16,16 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
     UserEntity apiToEntity(User api);
+
+    default Timestamp map(LocalDateTime original) {
+        return Timestamp.valueOf(original);
+    }
+
+    default LocalDateTime map (Timestamp original) {
+        return original.toLocalDateTime();
+    }
 }

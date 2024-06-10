@@ -6,16 +6,20 @@ import com.onesty.api.exceptions.NotFoundException;
 import com.onesty.services.user.persistence.UserEntity;
 import com.onesty.services.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceManager implements UserService {
@@ -45,6 +49,12 @@ public class UserServiceManager implements UserService {
     public User updateUser(Map<String, Object> updates, String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
+        if (updates.containsKey("birthdate")) {
+            Integer birthdate = (Integer) updates.get("birthdate");
+            log.info("{}", birthdate);
+            LocalDateTime converted = LocalDateTime.ofInstant(Instant.ofEpochSecond(birthdate), ZoneId.systemDefault());
+            log.info("birthdate original is {}, converted is {}", birthdate, converted);
+        }
 
         updates.forEach((key, value) -> {
             switch (key) {
@@ -54,8 +64,8 @@ public class UserServiceManager implements UserService {
                 case "gender":
                     userEntity.setGender((String) value);
                     break;
-                case "age":
-                    userEntity.setAge(((Timestamp) value).toLocalDateTime());
+                case "birthdate":
+                    userEntity.setBirthdate(LocalDateTime.ofInstant(Instant.ofEpochSecond((Integer) value), ZoneId.systemDefault()));
                     break;
                 case "height":
                     userEntity.setHeight((Integer) value);
