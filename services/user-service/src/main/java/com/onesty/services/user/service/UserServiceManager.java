@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
 
@@ -19,15 +20,13 @@ import static java.time.LocalDateTime.now;
 public class UserServiceManager implements UserService {
 
     private static final String NOT_FOUND_PREFIX = "No user found for userId: ";
-    private Long sequence = 1l;
 
     private final UserRepository repository;
     private final UserMapper mapper;
 
     public User createUser(User user) {
+        user.setUserId(UUID.randomUUID().toString());
         UserEntity userEntity = mapper.apiToEntity(user);
-        userEntity.setUserId(sequence);
-        sequence++;
         LocalDateTime now = LocalDateTime.now();
         userEntity.setCreatedAt(now);
         userEntity.setUpdatedAt(now);
@@ -35,14 +34,14 @@ public class UserServiceManager implements UserService {
         return mapper.entityToApi(saved);
     }
 
-    public User getUser(Long userId) {
+    public User getUser(String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
         if (userEntity.getDeletedAt() != null) throw new NotFoundException(NOT_FOUND_PREFIX + userId);
         return mapper.entityToApi(userEntity);
     }
 
-    public User updateUser(Map<String, Object> updates, Long userId) {
+    public User updateUser(Map<String, Object> updates, String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
 
@@ -55,7 +54,7 @@ public class UserServiceManager implements UserService {
                     userEntity.setGender((String) value);
                     break;
                 case "age":
-                    userEntity.setAge((Integer) value);
+                    userEntity.setAge((LocalDateTime) value);
                     break;
                 case "height":
                     userEntity.setHeight((Integer) value);
@@ -111,7 +110,7 @@ public class UserServiceManager implements UserService {
         return mapper.entityToApi(saved);
     }
 
-    public void deleteUser(Long userId) {
+    public void deleteUser(String userId) {
         UserEntity userEntity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_PREFIX + userId));
         userEntity.setDeletedAt(now());

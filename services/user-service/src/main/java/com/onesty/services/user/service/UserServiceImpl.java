@@ -26,18 +26,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Long userId) {
+    public User getUser(String userId) {
         log.info("got new request with user id {}", userId);
         return manager.getUser(userId);
     }
 
     @Override
-    public User updateUser(Map<String, Object> updates, Long userId) {
+    public User updateUser(Map<String, Object> updates, String userId) {
         return manager.updateUser(updates, userId);
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(String userId) {
         manager.deleteUser(userId);
     }
 

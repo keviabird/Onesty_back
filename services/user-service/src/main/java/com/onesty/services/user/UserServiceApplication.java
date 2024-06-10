@@ -1,6 +1,8 @@
 package com.onesty.services.user;
 
 import com.onesty.services.user.persistence.UserEntity;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +29,11 @@ public class UserServiceApplication {
 	@Bean
 	RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+
+	@Bean
+	public OpenAPI getOpenApiDocumentation() {
+		return new OpenAPI().info(new Info().title("test"));
 	}
 
 	public static void main(String[] args) {

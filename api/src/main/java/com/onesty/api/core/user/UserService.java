@@ -24,18 +24,20 @@ public interface UserService {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    User getUser(@PathVariable Long userId);
+    User getUser(@PathVariable String userId);
 
     @PatchMapping(
             value = "users/{userId}",
+            consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
     User updateUser(@RequestBody Map<String, Object> updates,
-                    @PathVariable Long userId);
+                    @PathVariable String userId);
 
     @DeleteMapping(
             value = "users/{userId}",
+            consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    void deleteUser(@PathVariable Long userId);
+    void deleteUser(@PathVariable String userId);
 }

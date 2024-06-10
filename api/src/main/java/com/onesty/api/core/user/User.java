@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -13,10 +14,10 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class User {
 
-    private Long userId;
+    private String userId;
     private String name;
     private String gender;
-    private Integer age;
+    private Timestamp birthdate;
     private Integer height;
     private Integer weight;
     private String location;
@@ -32,4 +33,5 @@ public class User {
     private String activity;
     private String aboutMe;
     private List<String> photos;
+    private List<String> fieldsToHide;
 }
