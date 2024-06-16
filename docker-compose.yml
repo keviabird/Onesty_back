@@ -34,6 +34,17 @@ services:
       minio:
         condition: service_healthy
 
+  message-service:
+    build: services/message-service
+    ports:
+      - "8082:8082"
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
   mongodb:
     image: mongo:4.4.2
     mem_limit: 512m
