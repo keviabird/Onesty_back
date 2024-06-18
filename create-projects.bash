@@ -29,4 +29,17 @@ spring init \
 --type=gradle-project \
 user-service
 
+spring init \
+--boot-version=3.3.0 \
+--build=gradle \
+--java-version=21 \
+--packaging=jar \
+--name=message-paging-service \
+--package-name=com.onesty.services.message.paging \
+--groupId=com.onesty.services.message.paging \
+--dependencies=actuator,webflux \
+--version=1.0.0-SNAPSHOT \
+--type=gradle-project \
+message-paging-service
+
 cd ..

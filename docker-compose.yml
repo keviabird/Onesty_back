@@ -2,15 +2,16 @@ version: '2.1'
 
 services:
 
-#  nginx:
-#    image: nginx:latest
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-#    depends_on:
-#      - user-service
-#      - file-service
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - user-service
+      - file-service
+      - message-service
 
   user-service:
     build: services/user-service
@@ -38,6 +39,17 @@ services:
     build: services/message-service
     ports:
       - "8082:8082"
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  message-paging-service:
+    build: services/message-paging-service
+    ports:
+      - "8083:8083"
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
