@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: User Search and Filter API
+  description: API for searching and filtering user profiles.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /users/{userId}/search:
+    post:
+      summary: Search and filter user profiles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchFilterRequest'
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+
+components:
+  schemas:
+    SearchFilterRequest:
+      type: object
+      properties:
+        keyword:
+          type: string
+        interests:
+          type: array
+          items:
+            type: string
+        location:
+          $ref: '#/components/schemas/Coordinates'
+        general:
+          $ref: '#/components/schemas/GeneralFilter'
+        match:
+          $ref: '#/components/schemas/MatchFilter'
+    SearchResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+        location:
+          type: string
+        distance:
+          type: integer
+        interests:
+          type: array
+          items:
+            type: string
+        socialRating:
+          type: integer
+        verifiedProfile:
+          type: boolean
+        photos:
+          type: array
+          items:
+            type: string
+            format: uri
+            maxItems: 5
+        ratings:
+          $ref: '#/components/schemas/Ratings'
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        pageSize:
+          type: integer
+        totalResults:
+          type: integer
+    GeneralFilter:
+      type: object
+      properties:
+        gender:
+          type: string
+        ageRange:
+          $ref: '#/components/schemas/Range'
+        distanceRange:
+          $ref: '#/components/schemas/Range'
+        socialRatingRange:
+          $ref: '#/components/schemas/Range'
+        verifiedProfilesOnly:
+          type: boolean
+    MatchFilter:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/Range'
+        values:
+          $ref: '#/components/schemas/Range'
+        persona:
+          $ref: '#/components/schemas/Range'
+        activities:
+          $ref: '#/components/schemas/Range'
+        views:
+          $ref: '#/components/schemas/Range'
+        average:
+          $ref: '#/components/schemas/Range'
+    Range:
+      type: object
+      properties:
+        min:
+          type: integer
+        max:
+          type: integer
+    Ratings:
+      type: object
+      properties:
+        content:
+          type: integer
+        values:
+          type: integer
+        persona:
+          type: integer
+        activities:
+          type: integer
+        views:
+          type: integer
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      required:
+        - latitude
+        - longitude

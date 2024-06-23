@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.onesty.api'
 version = '1.0.0-SNAPSHOT'
-sourceCompatibility = 21
+targetCompatibility = sourceCompatibility = 21
 
 repositories {
     mavenCentral()
