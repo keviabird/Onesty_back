@@ -1,6 +1,6 @@
 package com.onesty.services.search;
 
-import com.onesty.services.search.persistence.entity.UserEntity;
+import com.onesty.services.search.persistence.entity.SearchUserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -44,8 +44,8 @@ public class Application {
         MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext = mongoTemplate.getConverter().getMappingContext();
         IndexResolver resolver = new MongoPersistentEntityIndexResolver(mappingContext);
 
-        IndexOperations indexOps = mongoTemplate.indexOps(UserEntity.class);
-        resolver.resolveIndexFor(UserEntity.class).forEach(e -> indexOps.ensureIndex(e));
+        IndexOperations indexOps = mongoTemplate.indexOps(SearchUserEntity.class);
+        resolver.resolveIndexFor(SearchUserEntity.class).forEach(e -> indexOps.ensureIndex(e));
     }
 
 }

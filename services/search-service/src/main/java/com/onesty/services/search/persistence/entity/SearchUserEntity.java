@@ -32,7 +32,7 @@ import java.util.Set;
         @CompoundIndex(def = "{'views.p1': 1, views.p2': 1, views.p3': 1, views.p4': 1, views.p5': 1, views.p6': 1, views.p7': 1, views.p8': 1"),
 })
 @Document(collection = "search_users")
-public class UserEntity {
+public class SearchUserEntity {
 
     @Id
     private String id;
@@ -58,6 +58,7 @@ public class UserEntity {
     private Ratings activities;
     private Ratings views;
 
+    // TODO: надо ли хранить дату лайка/дислайка?
     private Set<String> matchByUserIds = new HashSet<>();
     private Set<String> mismatchByUserIds = new HashSet<>();
 
