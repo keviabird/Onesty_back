@@ -10,10 +10,12 @@ import java.time.Instant;
 
 @Mapper(componentModel = "spring")
 public interface ChatMessageMapper {
+
+    @Mapping(source = "id", target = "messageId")
     @Mapping(source = "createdAt", target = "sentAt")
     ChatMessage toDto(ChatMessageEntity chatMessageEntity);
 
-    @Mapping(source = "messageId", target = "id")
+    @Mapping(target = "messageId", ignore = true)
     @Mapping(source = "sentAt", target = "createdAt")
     @Mapping(target = "version", ignore = true)
     ChatMessageEntity toEntity(ChatMessage chatMessage);

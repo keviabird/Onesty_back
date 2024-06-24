@@ -14,7 +14,9 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class ChatServiceManager implements MessageService {
 
     @Override
     public void sendMessage(ChatMessage chatMessage) {
+        chatMessage.setSentAt(Timestamp.valueOf(LocalDateTime.now()));
         var chatMessageEntity = chatMessageMapper.toEntity(chatMessage);
         chatMessageEntity.setStatus(ChatMessageStatuses.SENT);
         chatMessageEntity.setCreatedAt(Instant.now());
