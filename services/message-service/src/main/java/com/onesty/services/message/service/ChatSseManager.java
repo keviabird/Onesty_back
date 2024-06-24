@@ -3,7 +3,9 @@ package com.onesty.services.message.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onesty.api.core.message.ChatMessage;
+import com.onesty.api.exceptions.NotFoundException;
 import com.onesty.services.message.exception.NoActiveSseSubscriberException;
+import com.onesty.services.message.persistence.ChatMessageEntity;
 import com.onesty.services.message.persistence.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import reactor.core.publisher.FluxSink;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j

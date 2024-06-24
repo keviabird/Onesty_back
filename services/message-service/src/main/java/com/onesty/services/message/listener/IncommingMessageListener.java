@@ -1,7 +1,9 @@
 package com.onesty.services.message.listener;
 
+import com.onesty.api.core.message.ChatMessage;
 import com.onesty.services.message.event.IncommingMessageEvent;
 import com.onesty.services.message.exception.NoActiveSseSubscriberException;
+import com.onesty.services.message.persistence.ChatMessageEntity;
 import com.onesty.services.message.persistence.ChatMessageRepository;
 import com.onesty.services.message.service.ChatMessageMapper;
 import com.onesty.services.message.service.ChatMessageStatuses;
@@ -24,12 +26,16 @@ public class IncommingMessageListener implements ApplicationListener<IncommingMe
     public void onApplicationEvent(IncommingMessageEvent event) {
         log.info("Got new message event");
         event.getChatMessage().setStatus(ChatMessageStatuses.DELIVERED);
+        ChatMessageEntity saved = chatMessageRepository.save(event.getChatMessage());
+        log.info("new message id is {}", saved.getId());
+        ChatMessage message = chatMessageMapper.toDto(saved);
+        log.info("converted message id is {}", message.getMessageId());
         try {
-            chatSseManager.sendSseMessage(chatMessageMapper.toDto(event.getChatMessage()));
+            chatSseManager.sendSseMessage(message);
         } catch (NoActiveSseSubscriberException e){
             return;
         }
-        chatMessageRepository.save(event.getChatMessage());
+
     }
 
     @Override

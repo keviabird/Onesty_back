@@ -24,8 +24,6 @@ public class ChatMessageEntity {
 
     private String toUserId;
 
-    private String messageId;
-
     private String fromUserId;
 
     private String text;

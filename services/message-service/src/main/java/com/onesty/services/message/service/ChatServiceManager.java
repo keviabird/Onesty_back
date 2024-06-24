@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onesty.api.core.message.ChatMessage;
 import com.onesty.api.core.message.MessageService;
 import com.onesty.services.message.event.IncommingMessageEvent;
+import com.onesty.services.message.persistence.ChatMessageEntity;
 import com.onesty.services.message.persistence.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +37,10 @@ public class ChatServiceManager implements MessageService {
         var chatMessageEntity = chatMessageMapper.toEntity(chatMessage);
         chatMessageEntity.setStatus(ChatMessageStatuses.SENT);
         chatMessageEntity.setCreatedAt(Instant.now());
-        chatMessageEntity = chatMessageRepository.save(chatMessageEntity);
+        ChatMessageEntity saved = chatMessageRepository.save(chatMessageEntity);
+        ChatMessage message = chatMessageMapper.toDto(saved);
         try {
-            rabbitTemplate.convertAndSend("chatMessageSseExchange", chatMessage.getToUserId(), objectMapper.writeValueAsString(chatMessageEntity));
+            rabbitTemplate.convertAndSend("chatMessageSseExchange", chatMessage.getToUserId(), objectMapper.writeValueAsString(message));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -15,7 +15,7 @@ public interface ChatMessageMapper {
     @Mapping(source = "createdAt", target = "sentAt")
     ChatMessage toDto(ChatMessageEntity chatMessageEntity);
 
-    @Mapping(target = "messageId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "sentAt", target = "createdAt")
     @Mapping(target = "version", ignore = true)
     ChatMessageEntity toEntity(ChatMessage chatMessage);
