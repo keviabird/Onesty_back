@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 
 public interface MessageService {
@@ -14,4 +15,7 @@ public interface MessageService {
 
     @GetMapping("/new-message/{userId}")
     Flux<ServerSentEvent> getMessages(@PathVariable String userId);
+
+    @PostMapping("/status/{messageId}")
+    void status(@PathVariable String messageId);
 }

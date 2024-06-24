@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onesty.api.core.message.ChatMessage;
 import com.onesty.api.core.message.MessageService;
+import com.onesty.api.exceptions.NotFoundException;
 import com.onesty.services.message.event.IncommingMessageEvent;
 import com.onesty.services.message.persistence.ChatMessageEntity;
 import com.onesty.services.message.persistence.ChatMessageRepository;
@@ -50,6 +51,19 @@ public class ChatServiceManager implements MessageService {
     @Override
     public Flux<ServerSentEvent> getMessages(String userId) {
         return chatSseManager.createSse(userId);
+    }
+
+    @Override
+    public void status(String messageId) {
+        ChatMessageEntity entity = chatMessageRepository.findById(messageId)
+                .orElseThrow(() -> new NotFoundException("message not found"));
+        entity.setStatus(ChatMessageStatuses.READ);
+        ChatMessage message = chatMessageMapper.toDto(chatMessageRepository.save(entity));
+        try {
+            rabbitTemplate.convertAndSend("chatMessageSseExchange", message.getToUserId(), objectMapper.writeValueAsString(message));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

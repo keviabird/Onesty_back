@@ -22,4 +22,9 @@ public class ChatServiceImpl implements MessageService {
     public Flux<ServerSentEvent> getMessages(String userId) {
         return chatServiceManager.getMessages(userId);
     }
+
+    @Override
+    public void status(String messageId) {
+        chatServiceManager.status(messageId);
+    }
 }
