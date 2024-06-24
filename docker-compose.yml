@@ -17,7 +17,7 @@ services:
     build: services/user-service
     ports:
       - "8080:8080"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -28,7 +28,7 @@ services:
     build: services/file-service
     ports:
       - "8081:8081"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -39,7 +39,7 @@ services:
     build: services/message-service
     ports:
       - "8082:8082"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -50,7 +50,7 @@ services:
     build: services/message-paging-service
     ports:
       - "8083:8083"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
