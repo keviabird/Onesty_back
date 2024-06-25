@@ -17,5 +17,5 @@ public class GeneralFilter {
     private Range ageRange;
     private Range distanceRange;
     private Range socialRatingRange;
-    private boolean verifiedProfilesOnly;
+    private Boolean verifiedProfilesOnly;
 }

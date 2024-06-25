@@ -25,13 +25,13 @@ import java.util.Set;
 @AllArgsConstructor
 @CompoundIndexes({
         @CompoundIndex(def = "{'birthdate': 1, 'gender': 1, 'socialRating': 1}"),
-        @CompoundIndex(def = "{'content.p1': 1, content.p2': 1, content.p3': 1, content.p4': 1, content.p5': 1, content.p6': 1, content.p7': 1, content.p8': 1"),
-        @CompoundIndex(def = "{'values.p1': 1, values.p2': 1, values.p3': 1, values.p4': 1, values.p5': 1, values.p6': 1, values.p7': 1, values.p8': 1"),
-        @CompoundIndex(def = "{'persona.p1': 1, persona.p2': 1, persona.p3': 1, persona.p4': 1, persona.p5': 1, persona.p6': 1, persona.p7': 1, persona.p8': 1"),
-        @CompoundIndex(def = "{'activities.p1': 1, activities.p2': 1, activities.p3': 1, activities.p4': 1, activities.p5': 1, activities.p6': 1, activities.p7': 1, activities.p8': 1"),
-        @CompoundIndex(def = "{'views.p1': 1, views.p2': 1, views.p3': 1, views.p4': 1, views.p5': 1, views.p6': 1, views.p7': 1, views.p8': 1"),
+        @CompoundIndex(def = "{'content.p1': 1, 'content.p2': 1, 'content.p3': 1, 'content.p4': 1, 'content.p5': 1, 'content.p6': 1, 'content.p7': 1, 'content.p8': 1}"),
+        @CompoundIndex(def = "{'values.p1': 1, 'values.p2': 1, 'values.p3': 1, 'values.p4': 1, 'values.p5': 1, 'values.p6': 1, 'values.p7': 1, 'values.p8': 1}"),
+        @CompoundIndex(def = "{'persona.p1': 1, 'persona.p2': 1, 'persona.p3': 1, 'persona.p4': 1, 'persona.p5': 1, 'persona.p6': 1, 'persona.p7': 1, 'persona.p8': 1}"),
+        @CompoundIndex(def = "{'activities.p1': 1, 'activities.p2': 1, 'activities.p3': 1, 'activities.p4': 1, 'activities.p5': 1, 'activities.p6': 1, 'activities.p7': 1, 'activities.p8': 1}"),
+        @CompoundIndex(def = "{'views.p1': 1, 'views.p2': 1, 'views.p3': 1, 'views.p4': 1, 'views.p5': 1, 'views.p6': 1, 'views.p7': 1, 'views.p8': 1}")
 })
-@Document(collection = "search_users")
+@Document(collection = "search_user")
 public class SearchUserEntity {
 
     @Id
@@ -62,7 +62,20 @@ public class SearchUserEntity {
     private Set<String> matchByUserIds = new HashSet<>();
     private Set<String> mismatchByUserIds = new HashSet<>();
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Ratings {
+
+        private Integer p1;
+        private Integer p2;
+        private Integer p3;
+        private Integer p4;
+        private Integer p5;
+        private Integer p6;
+        private Integer p7;
+        private Integer p8;
+    }
+
 }

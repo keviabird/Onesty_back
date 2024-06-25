@@ -150,6 +150,8 @@ components:
           type: integer
         views:
           type: integer
+        average:
+          type: integer
     Coordinates:
       type: object
       properties:
