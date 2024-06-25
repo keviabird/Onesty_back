@@ -33,7 +33,7 @@ public class ChatServiceManager implements MessageService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void sendMessage(ChatMessage chatMessage) {
+    public ChatMessage sendMessage(ChatMessage chatMessage) {
         chatMessage.setSentAt(Timestamp.valueOf(LocalDateTime.now()));
         var chatMessageEntity = chatMessageMapper.toEntity(chatMessage);
         chatMessageEntity.setStatus(ChatMessageStatuses.SENT);
@@ -45,6 +45,7 @@ public class ChatServiceManager implements MessageService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        return message;
         //applicationEventPublisher.publishEvent(new IncommingMessageEvent(this, chatMessageEntity));
     }
 
@@ -60,7 +61,7 @@ public class ChatServiceManager implements MessageService {
         entity.setStatus(ChatMessageStatuses.READ);
         ChatMessage message = chatMessageMapper.toDto(chatMessageRepository.save(entity));
         try {
-            rabbitTemplate.convertAndSend("chatMessageSseExchange", message.getToUserId(), objectMapper.writeValueAsString(message));
+            rabbitTemplate.convertAndSend("chatMessageSseExchange", message.getFromUserId(), objectMapper.writeValueAsString(message));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 public interface MessageService {
 
     @PostMapping("/send")
-    void sendMessage(@RequestBody ChatMessage chatMessage);
+    ChatMessage sendMessage(@RequestBody ChatMessage chatMessage);
 
     @GetMapping("/new-message/{userId}")
     Flux<ServerSentEvent> getMessages(@PathVariable String userId);

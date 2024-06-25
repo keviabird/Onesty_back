@@ -68,19 +68,24 @@ public class ChatSseManager {
     @RabbitListener(queues = "#{@QueueName.QUEUE_NAME}")
     public void listen(String message1) throws NoActiveSseSubscriberException, JsonProcessingException {
         var message = objectMapper.readValue(message1, ChatMessage.class);
-        log.info("got message from: " + message.getFromUserId());
-        sendSseMessage(message);
+        log.info("got message from: " + message.getFromUserId() + " with status: " + message.getStatus());
+        if (Objects.equals(ChatMessageStatuses.READ, message.getStatus())){
+            sendSseMessage(message, message.getFromUserId());
+            return;
+        }
+        sendSseMessage(message, message.getToUserId());
     }
 
-    public void sendSseMessage(ChatMessage message) throws NoActiveSseSubscriberException {
+
+    public void sendSseMessage(ChatMessage message, String userId) throws NoActiveSseSubscriberException {
         ServerSentEvent<ChatMessage> event = ServerSentEvent
                 .builder(message)
                 .build();
 
-        if (!subscriptions.containsKey(message.getToUserId())){
+        if (!subscriptions.containsKey(userId)){
             throw new NoActiveSseSubscriberException(String.format("No active user with id = %s", message.getToUserId()));
         }
 
-        subscriptions.get(message.getToUserId()).next(event);
+        subscriptions.get(userId).next(event);
     }
 }

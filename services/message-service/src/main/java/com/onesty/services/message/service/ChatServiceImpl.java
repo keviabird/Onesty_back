@@ -14,8 +14,8 @@ public class ChatServiceImpl implements MessageService {
 
     private final ChatServiceManager chatServiceManager;
     @Override
-    public void sendMessage(ChatMessage chatMessage) {
-        chatServiceManager.sendMessage(chatMessage);
+    public ChatMessage sendMessage(ChatMessage chatMessage) {
+        return chatServiceManager.sendMessage(chatMessage);
     }
 
     @Override
