@@ -13,12 +13,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public interface UserService {
 
-
     @PostMapping(
             value = "/users",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     User createUser(@RequestBody User body);
+
     @GetMapping(
             value = "users/{userId}",
             consumes = APPLICATION_JSON_VALUE,

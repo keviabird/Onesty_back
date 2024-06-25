@@ -1,0 +1,156 @@
+[
+  {
+    "_id": {
+      "$oid": "667946773cf160615af8580b"
+    },
+    "version": 0,
+    "userId": "49d10fea-2e9f-4288-9bce-f88f24c70148",
+    "name": "Maksim",
+    "birthdate": {
+      "$date": "1992-12-26T00:00:00.000Z"
+    },
+    "gender": "male",
+    "location": "Izhevsk",
+    "coordinates": {
+      "x": 53.231942,
+      "y": 56.870321
+    },
+    "socialRating": 8,
+    "verifiedProfile": true,
+    "photos": [
+      "/photo1",
+      "/MaksimPhoto2"
+    ],
+    "content": {
+      "p1": 7,
+      "p2": 7,
+      "p3": 7,
+      "p4": 3,
+      "p5": 6,
+      "p6": 6,
+      "p7": 5,
+      "p8": 7
+    },
+    "values": {
+      "p1": 8,
+      "p2": 8,
+      "p3": 8,
+      "p4": 1,
+      "p5": 7,
+      "p6": 6,
+      "p7": 9,
+      "p8": 7
+    },
+    "persona": {
+      "p1": 4,
+      "p2": 5,
+      "p3": 8,
+      "p4": 7,
+      "p5": 6,
+      "p6": 6,
+      "p7": 3,
+      "p8": 4
+    },
+    "activities": {
+      "p1": 6,
+      "p2": 5,
+      "p3": 3,
+      "p4": 1,
+      "p5": 2,
+      "p6": 5,
+      "p7": 3,
+      "p8": 7
+    },
+    "views": {
+      "p1": 1,
+      "p2": 5,
+      "p3": 9,
+      "p4": 10,
+      "p5": 6,
+      "p6": 2,
+      "p7": 5,
+      "p8": 8
+    },
+    "matchByUserIds": [],
+    "mismatchByUserIds": [],
+    "_class": "com.onesty.services.search.persistence.entity.SearchUserEntity"
+  },
+  {
+    "_id": {
+      "$oid": "667947756eaa631c698d2349"
+    },
+    "version": 0,
+    "userId": "9c8e67fc-5ff1-4e19-b4d0-2f8104b1f2b9",
+    "name": "Petr",
+    "birthdate": {
+      "$date": {
+        "$numberLong": "-48830400000"
+      }
+    },
+    "gender": "male",
+    "location": "Votkinsk",
+    "coordinates": {
+      "x": 53.990612,
+      "y": 57.052505
+    },
+    "socialRating": 6,
+    "verifiedProfile": false,
+    "photos": [
+      "/img1",
+      "/petr-2"
+    ],
+    "content": {
+      "p1": 3,
+      "p2": 7,
+      "p3": 6,
+      "p4": 2,
+      "p5": 1,
+      "p6": 5,
+      "p7": 9,
+      "p8": 4
+    },
+    "values": {
+      "p1": 1,
+      "p2": 10,
+      "p3": 7,
+      "p4": 5,
+      "p5": 4,
+      "p6": 7,
+      "p7": 4,
+      "p8": 8
+    },
+    "persona": {
+      "p1": 10,
+      "p2": 9,
+      "p3": 4,
+      "p4": 7,
+      "p5": 2,
+      "p6": 3,
+      "p7": 1,
+      "p8": 3
+    },
+    "activities": {
+      "p1": 4,
+      "p2": 1,
+      "p3": 3,
+      "p4": 3,
+      "p5": 3,
+      "p6": 10,
+      "p7": 3,
+      "p8": 3
+    },
+    "views": {
+      "p1": 3,
+      "p2": 4,
+      "p3": 6,
+      "p4": 3,
+      "p5": 5,
+      "p6": 6,
+      "p7": 9,
+      "p8": 4
+    },
+    "matchByUserIds": [],
+    "mismatchByUserIds": [],
+    "_class": "com.onesty.services.search.persistence.entity.SearchUserEntity"
+  }
+]
