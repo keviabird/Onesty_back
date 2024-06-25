@@ -16,6 +16,11 @@ paths:
             schema:
               $ref: '#/components/schemas/SearchFilterRequest'
       parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
         - name: page
           in: query
           required: false
