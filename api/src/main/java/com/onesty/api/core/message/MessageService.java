@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 public interface MessageService {
 
     @PostMapping("/send")
@@ -16,6 +18,6 @@ public interface MessageService {
     @GetMapping("/new-message/{userId}")
     Flux<ServerSentEvent> getMessages(@PathVariable String userId);
 
-    @PostMapping("/status/{messageId}")
-    void status(@PathVariable String messageId);
+    @PostMapping("/status")
+    void status(@RequestBody List<String> messageIds);
 }

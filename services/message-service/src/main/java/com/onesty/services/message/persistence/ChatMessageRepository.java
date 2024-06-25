@@ -13,4 +13,6 @@ public interface ChatMessageRepository extends CrudRepository<ChatMessageEntity,
 
     @Query("$and: [{'toUserId' : :#{#toUserId}, 'fromUserId' : :#{#fromUserId}}, {'toUserId' : :#{#fromUserId}, 'fromUserId' : :#{#toUserId}}]")
     List<ChatMessageEntity> findAllMessages(@Param("toUserId") String toUserId, @Param("fromUserId") String fromUserId);
+
+    List<ChatMessageEntity> findAllByIdIn(List<String> ids);
 }

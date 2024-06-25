@@ -7,6 +7,8 @@ import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -24,7 +26,7 @@ public class ChatServiceImpl implements MessageService {
     }
 
     @Override
-    public void status(String messageId) {
-        chatServiceManager.status(messageId);
+    public void status(List<String> messageIds) {
+        chatServiceManager.status(messageIds);
     }
 }

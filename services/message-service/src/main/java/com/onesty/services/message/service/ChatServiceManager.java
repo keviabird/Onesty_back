@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,11 +41,7 @@ public class ChatServiceManager implements MessageService {
         chatMessageEntity.setCreatedAt(Instant.now());
         ChatMessageEntity saved = chatMessageRepository.save(chatMessageEntity);
         ChatMessage message = chatMessageMapper.toDto(saved);
-        try {
-            rabbitTemplate.convertAndSend("chatMessageSseExchange", chatMessage.getToUserId(), objectMapper.writeValueAsString(message));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        performEventSend(message, chatMessage.getToUserId());
         return message;
         //applicationEventPublisher.publishEvent(new IncommingMessageEvent(this, chatMessageEntity));
     }
@@ -55,17 +52,17 @@ public class ChatServiceManager implements MessageService {
     }
 
     @Override
-    public void status(String messageId) {
-        ChatMessageEntity entity = chatMessageRepository.findById(messageId)
-                .orElseThrow(() -> new NotFoundException("message not found"));
-        entity.setStatus(ChatMessageStatuses.READ);
-        ChatMessage message = chatMessageMapper.toDto(chatMessageRepository.save(entity));
+    public void status(List<String> messageIds) {
+        List<ChatMessageEntity> saved = chatMessageRepository.findAllByIdIn(messageIds);
+        saved.forEach(message -> message.setStatus(ChatMessageStatuses.READ));
+        saved.stream().map(chatMessageMapper::toDto).forEach(message -> performEventSend(message, message.getFromUserId()));
+    }
+
+    private void performEventSend(ChatMessage message, String targetUser) {
         try {
-            rabbitTemplate.convertAndSend("chatMessageSseExchange", message.getFromUserId(), objectMapper.writeValueAsString(message));
+            rabbitTemplate.convertAndSend("chatMessageSseExchange", targetUser, objectMapper.writeValueAsString(message));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }
