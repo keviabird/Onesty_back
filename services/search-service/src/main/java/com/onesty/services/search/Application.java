@@ -20,7 +20,9 @@ public class Application {
         ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args);
         String mongoDbHost = ctx.getEnvironment().getProperty("spring.data.mongodb.host");
         String mongoDbPort = ctx.getEnvironment().getProperty("spring.data.mongodb.port");
+        String kafkaServers = ctx.getEnvironment().getProperty("spring.kafka.bootstrap-servers");
         log.info("Connected to MongoDb: {}:{}", mongoDbHost, mongoDbPort);
+        log.info("Connected to Kafka: {}", kafkaServers);
     }
 
 }

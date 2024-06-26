@@ -51,4 +51,4 @@ spring.config.activate.on-profile: docker
 server.port: 8082
 
 spring.data.mongodb.host: mongodb
-spring.kafka.bootstrap-servers: kafka:9092
+spring.kafka.bootstrap-servers: kafka:29092

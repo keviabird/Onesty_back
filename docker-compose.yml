@@ -4,6 +4,7 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
@@ -15,17 +16,19 @@ services:
 
   user-service:
     build: services/user-service
+    container_name: user-service
     ports:
       - "8080:8080"
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      mongodb:
-#        condition: service_healthy
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
   file-service:
     build: services/file-service
+    container_name: file-service
     ports:
       - "8081:8081"
     mem_limit: 512m
@@ -37,14 +40,15 @@ services:
 
   search-service:
     build: services/search-service
+    container_name: search-service
     ports:
       - "8082:8082"
     mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-#      mongodb:
-#        condition: service_healthy
+      mongodb:
+        condition: service_healthy
       kafka:
         condition: service_healthy
 
@@ -55,11 +59,11 @@ services:
     ports:
       - "27017:27017"
     command: mongod
-#    healthcheck:
-#      test: "mongo --eval 'db.stats().ok'"
-#      interval: 5s
-#      timeout: 2s
-#      retries: 60
+    healthcheck:
+      test: "mongosh --eval 'db.stats().ok'"
+      interval: 5s
+      timeout: 2s
+      retries: 10
 
   minio:
     image: minio/minio
@@ -83,7 +87,6 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.6.1
     container_name: kafka
-    mem_limit: 512m
     restart: "no"
     ports:
       - "29092:29092"
@@ -96,11 +99,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_NODE_ID: 1
-      CLUSTER_ID: eDHalolOTGubsAXamfcH3A
+      CLUSTER_ID: oFwURyiqSuaCg-2QfY3mMA
       KAFKA_PROCESS_ROLES: controller,broker
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://0.0.0.0:9092,CONTROLLER://:9093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://0.0.0.0:9092,CONTROLLER://kafka:9093
     healthcheck:
       test: kafka-topics --bootstrap-server localhost:9092 --list
       interval: 10s
