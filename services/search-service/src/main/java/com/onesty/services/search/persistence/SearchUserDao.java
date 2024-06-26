@@ -1,10 +1,13 @@
 package com.onesty.services.search.persistence;
 
+import com.onesty.api.core.match.MatchRequest;
+import com.onesty.api.core.match.MatchType;
 import com.onesty.api.core.search.Coordinates;
 import com.onesty.api.core.search.GeneralFilter;
 import com.onesty.api.core.search.MatchFilter;
 import com.onesty.api.core.search.Range;
 import com.onesty.api.core.search.SearchFilterRequest;
+import com.onesty.services.search.configuration.MongoDBConfiguration;
 import com.onesty.services.search.persistence.entity.SearchUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +21,15 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.onesty.services.search.configuration.MongoDBConfiguration.COLLECTION_NAME;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
@@ -37,7 +43,7 @@ public class SearchUserDao {
         Pageable pageable = PageRequest.of(page, pageSize);
         query.with(pageable);
 
-        List<SearchUserEntity> results = mongoOperations.find(query, SearchUserEntity.class, "search_user");
+        List<SearchUserEntity> results = mongoOperations.find(query, SearchUserEntity.class, MongoDBConfiguration.COLLECTION_NAME);
 
         return PageableExecutionUtils.getPage(results, pageable, () -> totalCount(query));
     }
@@ -45,7 +51,17 @@ public class SearchUserDao {
     public SearchUserEntity findByUserId(String userId) {
         Criteria criteria = where("userId").is(userId);
         Query query = Query.query(criteria);
-        return mongoOperations.findOne(query, SearchUserEntity.class, "search_user");
+        return mongoOperations.findOne(query, SearchUserEntity.class, MongoDBConfiguration.COLLECTION_NAME);
+    }
+
+    public void saveMatch(String userId, MatchRequest matchRequest) {
+        String userIdToFind = matchRequest.getUserId();
+
+        Query query = new Query().addCriteria(Criteria.where("userId").is(userIdToFind));
+        String key = matchRequest.getType() == MatchType.MISMATCH ? "mismatchByUserIds" : "matchByUserIds";
+        UpdateDefinition updateDefinition = new Update().addToSet(key, userId);
+
+        mongoOperations.updateFirst(query, updateDefinition, SearchUserEntity.class, COLLECTION_NAME);
     }
 
     private Query createSearchQuery(SearchUserEntity currentUser, SearchFilterRequest request) {
@@ -69,7 +85,7 @@ public class SearchUserDao {
         }
         String gender = general.getGender();
         if (StringUtils.isNotBlank(gender)) {
-            Criteria genderCriteria = where("gender").is(gender);
+            Criteria genderCriteria = where("gender").is(gender.trim());
             tmp = tmp.addCriteria(genderCriteria);
         }
 
@@ -183,7 +199,7 @@ public class SearchUserDao {
 
     private long totalCount(Query query) {
         Query countQuery = Query.of(query).skip(-1).limit(-1);
-        return mongoOperations.count(countQuery, SearchUserEntity.class, "search_user");
+        return mongoOperations.count(countQuery, SearchUserEntity.class, MongoDBConfiguration.COLLECTION_NAME);
     }
 
 }

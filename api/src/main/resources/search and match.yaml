@@ -40,6 +40,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResults'
+  /users/{userId}/match:
+    post:
+      summary: Save match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchRequest'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully save matchs
 
 components:
   schemas:
@@ -169,3 +187,25 @@ components:
       required:
         - latitude
         - longitude
+    MatchRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        mode:
+          type: string
+          format: enum
+          enum:
+            - ROMANCE
+            - SOCIALIZING
+        type:
+          type: string
+          format: enum
+          enum:
+            - MATCH
+            - SUPER_MATCH
+            - MISMATCH
+      required:
+        - userId
+        - mode
+        - type
