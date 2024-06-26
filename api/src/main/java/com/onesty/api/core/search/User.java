@@ -21,7 +21,7 @@ public class User {
     private String gender;
     private String location;
     private Integer distance;
-    private List<String> interests;
+    private String occupation;
     private Integer socialRating;
     private boolean verifiedProfile;
     private List<String> photos;

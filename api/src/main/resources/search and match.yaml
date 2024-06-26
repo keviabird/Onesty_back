@@ -100,10 +100,8 @@ components:
           type: string
         distance:
           type: integer
-        interests:
-          type: array
-          items:
-            type: string
+        occupation:
+          type: string
         socialRating:
           type: integer
         verifiedProfile:
@@ -129,7 +127,9 @@ components:
       type: object
       properties:
         gender:
-          type: string
+          type: array
+          items:
+            type: string
         ageRange:
           $ref: '#/components/schemas/Range'
         distanceRange:

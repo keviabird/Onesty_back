@@ -73,6 +73,7 @@
     },
     "matchByUserIds": [],
     "mismatchByUserIds": [],
+    "occupation": "Developer",
     "_class": "com.onesty.services.search.persistence.entity.SearchUserEntity"
   },
   {
@@ -151,6 +152,7 @@
     },
     "matchByUserIds": [],
     "mismatchByUserIds": [],
+    "occupation": "Designer",
     "_class": "com.onesty.services.search.persistence.entity.SearchUserEntity"
   }
 ]

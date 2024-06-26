@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class GeneralFilter {
 
-    private String gender;
+    private List<String> gender;
     private Range ageRange;
     private Range distanceRange;
     private Range socialRatingRange;

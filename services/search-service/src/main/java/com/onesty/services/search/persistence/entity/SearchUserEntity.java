@@ -49,7 +49,7 @@ public class SearchUserEntity {
     private String location;
     @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private Point coordinates;
-    // private List<String> interests;
+    private String occupation;
     @Indexed(sparse = true)
     private Integer socialRating;
     private boolean verifiedProfile;

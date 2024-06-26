@@ -10,7 +10,6 @@ import com.onesty.api.core.search.SearchFilterRequest;
 import com.onesty.services.search.configuration.MongoDBConfiguration;
 import com.onesty.services.search.persistence.entity.SearchUserEntity;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -83,9 +82,9 @@ public class SearchUserDao {
         if (general == null) {
             return tmp;
         }
-        String gender = general.getGender();
-        if (StringUtils.isNotBlank(gender)) {
-            Criteria genderCriteria = where("gender").is(gender.trim());
+        List<String> gender = general.getGender();
+        if (gender != null && !gender.isEmpty()) {
+            Criteria genderCriteria = where("gender").in(gender);
             tmp = tmp.addCriteria(genderCriteria);
         }
 

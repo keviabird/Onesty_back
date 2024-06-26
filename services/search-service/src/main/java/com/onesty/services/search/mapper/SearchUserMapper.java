@@ -38,7 +38,7 @@ public abstract class SearchUserMapper {
     @Mapping(target = "gender", source = "user.gender")
     @Mapping(target = "location", source = "user.location")
     @Mapping(target = "distance", expression = "java(calculateDistance(currentLocation, user.getCoordinates()))")
-    @Mapping(target = "interests", ignore = true)
+    @Mapping(target = "occupation", source = "user.occupation")
     @Mapping(target = "socialRating", source = "user.socialRating")
     @Mapping(target = "verifiedProfile", source = "user.verifiedProfile")
     @Mapping(target = "photos", source = "user.photos")
