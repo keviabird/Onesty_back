@@ -1,4 +1,6 @@
 include ':services:file-service'
 include ':services:user-service'
+include ':services:message-service'
+include ':services:message-paging-service'
 include ':api'
 include ':util'
