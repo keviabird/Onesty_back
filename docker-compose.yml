@@ -2,15 +2,16 @@ version: '2.1'
 
 services:
 
-#  nginx:
-#    image: nginx:latest
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-#    depends_on:
-#      - user-service
-#      - file-service
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - user-service
+      - file-service
+      - search-service
 
   user-service:
     build: services/user-service
@@ -19,9 +20,9 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      mongodb:
-        condition: service_healthy
+#    depends_on:
+#      mongodb:
+#        condition: service_healthy
 
   file-service:
     build: services/file-service
@@ -42,22 +43,23 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      mongodb:
-        condition: service_healthy
+#      mongodb:
+#        condition: service_healthy
       kafka:
         condition: service_healthy
 
   mongodb:
     image: mongo:7.0.11
+    container_name: mongo
     mem_limit: 512m
     ports:
       - "27017:27017"
     command: mongod
-    healthcheck:
-      test: "mongo --eval 'db.stats().ok'"
-      interval: 5s
-      timeout: 2s
-      retries: 60
+#    healthcheck:
+#      test: "mongo --eval 'db.stats().ok'"
+#      interval: 5s
+#      timeout: 2s
+#      retries: 60
 
   minio:
     image: minio/minio
