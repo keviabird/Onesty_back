@@ -12,6 +12,7 @@ services:
     depends_on:
       - user-service
       - file-service
+      - message-service
       - search-service
 
   user-service:
@@ -19,7 +20,7 @@ services:
     container_name: user-service
     ports:
       - "8080:8080"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
@@ -31,18 +32,42 @@ services:
     container_name: file-service
     ports:
       - "8081:8081"
-    mem_limit: 512m
+    mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       minio:
         condition: service_healthy
 
+  message-service:
+    build: services/message-service
+    container_name: message-service
+    ports:
+      - "8082:8082"
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  message-paging-service:
+    build: services/message-paging-service
+    container_name: message-paging-service
+    ports:
+      - "8083:8083"
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
   search-service:
     build: services/search-service
     container_name: search-service
     ports:
-      - "8082:8082"
+      - "8084:8084"
     mem_limit: 256m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -83,6 +108,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
