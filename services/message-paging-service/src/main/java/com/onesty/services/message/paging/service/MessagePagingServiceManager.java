@@ -25,7 +25,7 @@ public class MessagePagingServiceManager implements MessagePagingService {
 
     @Override
     public List<ChatMessage> getPagingMessages(String userId, Integer pageNum, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "createdAt"));
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<ChatMessageEntity> allByToUserId = repository.findAllByToUserId(userId, pageable);
         return allByToUserId.stream().map(mapper::toDto).collect(Collectors.toList());
     }
