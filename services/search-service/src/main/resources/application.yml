@@ -1,0 +1,54 @@
+server.port: 7005
+server.error.include-message: always
+server.forward-headers-strategy: framework
+
+spring:
+  application:
+    name: search-service
+  data.mongodb:
+    host: localhost
+    port: 27017
+    database: onesty-db-search
+    auto-index-creation: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: ${spring.application.name}
+    consumer:
+      auto-offset-reset: earliest
+      group-id: ${spring.application.name}-v1
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      max-poll-records: 10
+      properties:
+        spring.json.trusted.packages: "com.onesty.*"
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      retries: 10
+    admin:
+      fail-fast: true
+      auto-create: true
+    listener:
+#      type: batch
+      ack-mode: record
+      concurrency: 3
+      log-container-config: true
+      missing-topics-fatal: true
+      auto-startup: true
+  codec:
+    max-in-memory-size: 5MB
+
+logging:
+  level:
+    root: INFO
+    com.onesty: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+
+---
+spring.config.activate.on-profile: docker
+
+server.port: 8084
+
+spring.data.mongodb.host: mongodb
+spring.kafka.bootstrap-servers: kafka:29092

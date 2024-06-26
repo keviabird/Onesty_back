@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.onesty.api'
 version = '1.0.0-SNAPSHOT'
-sourceCompatibility = 21
+targetCompatibility = sourceCompatibility = 21
 
 repositories {
     mavenCentral()
@@ -17,6 +17,7 @@ ext {
 
 dependencies {
     implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
     compileOnly 'org.projectlombok:lombok:1.18.32'

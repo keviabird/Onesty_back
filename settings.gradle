@@ -1,4 +1,5 @@
 include ':services:file-service'
+include ':services:search-service'
 include ':services:user-service'
 include ':services:message-service'
 include ':services:message-paging-service'
