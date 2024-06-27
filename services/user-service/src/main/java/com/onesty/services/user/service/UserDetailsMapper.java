@@ -16,18 +16,11 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface UserDetailsMapper {
 
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "name", source = "name")
     @Mapping(target = "age", source = "birthdate", qualifiedByName = "dateToAge")
-    @Mapping(target = "gender", source = "gender")
-    @Mapping(target = "location", source = "location")
-    @Mapping(target = "occupation", source = "occupation")
     @Mapping(target = "distance", ignore = true)
     @Mapping(target = "interests", ignore = true)
     @Mapping(target = "socialRating", ignore = true)
     @Mapping(target = "verifiedProfile", constant = "true")
-    @Mapping(target = "photos", source = "photos")
-    @Mapping(target = "aboutMe", source = "aboutMe")
     @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "categories", ignore = true)
     UserDetails entityToApi(UserEntity entity);
