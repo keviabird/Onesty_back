@@ -123,6 +123,8 @@ components:
           type: integer
         totalResults:
           type: integer
+        totalPages:
+          type: integer
     GeneralFilter:
       type: object
       properties:

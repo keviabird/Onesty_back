@@ -30,7 +30,10 @@ public class SearchUserService {
         Page<SearchUserEntity> results = dao.search(currentUser, page, pageSize, request);
         List<User> users = searchUserMapper.map(results.getContent(), request.getLocation(), currentUser);
 
-        return new SearchResults(new Pagination(results.getNumber(), results.getSize(), Math.toIntExact(results.getTotalElements())), users);
+        int totalResults = Math.toIntExact(results.getTotalElements());
+        int totalPages = results.getTotalPages();
+        Pagination pagination = new Pagination(results.getNumber(), results.getSize(), totalResults, totalPages);
+        return new SearchResults(pagination, users);
     }
 
 }

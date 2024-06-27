@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: User Detailed Info API
+  description: API for retrieving detailed user information including categories and rubrics.
+  version: 1.0.0
+paths:
+  /users/{userId}/details:
+    get:
+      summary: Get detailed user profile by ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval of user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+
+components:
+  schemas:
+    UserDetails:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+        location:
+          type: string
+        occupation:
+          type: string
+        distance:
+          type: integer
+        interests:
+          type: array
+          items:
+            type: string
+        socialRating:
+          type: integer
+        verifiedProfile:
+          type: boolean
+        photos:
+          type: array
+          items:
+            type: string
+            format: uri
+            maxItems: 5
+        aboutMe:
+          type: string
+        ratings:
+          $ref: '#/components/schemas/Ratings'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    Ratings:
+      type: object
+      properties:
+        content:
+          type: integer
+        values:
+          type: integer
+        persona:
+          type: integer
+        activities:
+          type: integer
+        views:
+          type: integer
+        average:
+          type: integer
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+        rubrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/RubricDetails'
+    RubricDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+          format: uri
+        rubricScores:
+          type: array
+          items:
+            $ref: '#/components/schemas/RubricScore'
+    RubricScore:
+      type: object
+      properties:
+        summary:
+          type: string
+        commonGround:
+          type: array
+          items:
+            type: string
+        leftName:
+          type: string
+        rightName:
+          type: string
+        personScore:
+          type: integer
+        selfScore:
+          type: integer

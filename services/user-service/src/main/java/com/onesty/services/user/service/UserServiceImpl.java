@@ -2,17 +2,17 @@ package com.onesty.services.user.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onesty.api.core.user.User;
+import com.onesty.api.core.user.UserDetails;
 import com.onesty.api.core.user.UserService;
-import com.onesty.util.http.HttpErrorInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -41,11 +41,9 @@ public class UserServiceImpl implements UserService {
         manager.deleteUser(userId);
     }
 
-    private String getErrorMessage(HttpClientErrorException ex) {
-        try {
-            return mapper.readValue(ex.getResponseBodyAsString(), HttpErrorInfo.class).message();
-        } catch (IOException ioex) {
-            return ex.getMessage();
-        }
+    @Override
+    public UserDetails getUserDetails(String userId) {
+        return manager.getUserDetails(userId);
     }
+
 }
