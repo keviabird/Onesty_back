@@ -28,3 +28,12 @@ general service endpoint
 
 swagger-ui:
 >http://localhost/openapi/webjars/swagger-ui/index.html
+
+## Load database dump to MongoDB
+
+* Install MongoDB database tools according to the [instruction](https://www.mongodb.com/docs/database-tools/installation/installation-macos/)
+* Load dump using command
+
+```shell
+mongorestore -h="localhost:27017" --archive=dump
+```

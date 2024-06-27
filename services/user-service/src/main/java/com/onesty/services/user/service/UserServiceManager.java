@@ -147,6 +147,7 @@ public class UserServiceManager implements UserService {
                     Random random = new Random();
                     dto.setDistance(random.nextInt(100));
                     dto.setSocialRating(random.nextInt(1, 11));
+                    dto.setVerifiedProfile(random.nextBoolean());
 
                     Ratings ratings = new Ratings();
                     int sum = 0;
