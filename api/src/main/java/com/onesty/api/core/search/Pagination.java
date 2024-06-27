@@ -16,4 +16,5 @@ public class Pagination {
     private int currentPage;
     private int pageSize;
     private int totalResults;
+    private int totalPages;
 }
