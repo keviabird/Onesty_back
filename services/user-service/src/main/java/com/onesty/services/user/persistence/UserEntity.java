@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,7 +44,7 @@ public class UserEntity {
     private String activity;
     private String aboutMe;
     private List<String> photos;
-    private List<String> fieldsToHide;
+    private Set<String> fieldsToHide;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

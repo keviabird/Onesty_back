@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,5 +34,5 @@ public class User {
     private String activity;
     private String aboutMe;
     private List<String> photos;
-    private List<String> fieldsToHide;
+    private Set<String> fieldsToHide;
 }

@@ -4,12 +4,13 @@ import com.onesty.api.core.user.User;
 import com.onesty.services.user.persistence.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface UserMapper {
 
     User entityToApi(UserEntity entity);

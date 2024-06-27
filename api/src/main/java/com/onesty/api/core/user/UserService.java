@@ -40,4 +40,11 @@ public interface UserService {
             produces = APPLICATION_JSON_VALUE
     )
     void deleteUser(@PathVariable String userId);
+
+    @GetMapping(
+            value = "users/{userId}/details",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
+    )
+    UserDetails getUserDetails(@PathVariable String userId);
 }
