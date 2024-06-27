@@ -20,7 +20,7 @@ public interface UserDetailsMapper {
     @Mapping(target = "distance", ignore = true)
     @Mapping(target = "interests", ignore = true)
     @Mapping(target = "socialRating", ignore = true)
-    @Mapping(target = "verifiedProfile", constant = "true")
+    @Mapping(target = "verifiedProfile", ignore = true)
     @Mapping(target = "ratings", ignore = true)
     @Mapping(target = "categories", ignore = true)
     UserDetails entityToApi(UserEntity entity);
@@ -34,6 +34,10 @@ public interface UserDetailsMapper {
     @AfterMapping
     default UserDetails hideFields(@MappingTarget UserDetails dto, UserEntity entity) {
         Set<String> fieldsToHide = entity.getFieldsToHide();
+        if (fieldsToHide == null || fieldsToHide.isEmpty()) {
+            return dto;
+        }
+
         for (String field : fieldsToHide) {
             switch (field) {
                 case "birthdate":
