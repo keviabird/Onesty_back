@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 
 import java.sql.Timestamp;
@@ -29,11 +30,11 @@ public class ChatServiceManager implements MessageService {
     private final ChatSseManager chatSseManager;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatMessageMapper chatMessageMapper;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
 
     @Override
+    @Transactional
     public ChatMessage sendMessage(ChatMessage chatMessage) {
         chatMessage.setSentAt(Timestamp.valueOf(LocalDateTime.now()));
         var chatMessageEntity = chatMessageMapper.toEntity(chatMessage);
@@ -43,8 +44,9 @@ public class ChatServiceManager implements MessageService {
         ChatMessage message = chatMessageMapper.toDto(saved);
         performEventSend(message, chatMessage.getToUserId());
         return message;
-        //applicationEventPublisher.publishEvent(new IncommingMessageEvent(this, chatMessageEntity));
     }
+
+
 
     @Override
     public Flux<ServerSentEvent> getMessages(String userId) {
@@ -61,6 +63,7 @@ public class ChatServiceManager implements MessageService {
     private void performEventSend(ChatMessage message, String targetUser) {
         try {
             rabbitTemplate.convertAndSend("chatMessageSseExchange", targetUser, objectMapper.writeValueAsString(message));
+            rabbitTemplate.convertAndSend("chatExchange", "", objectMapper.writeValueAsString(message));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
