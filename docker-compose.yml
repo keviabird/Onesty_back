@@ -77,6 +77,18 @@ services:
       kafka:
         condition: service_healthy
 
+  chat-service:
+    build: services/chat-service
+    container_name: chat-service
+    ports:
+      - "8085:8085"
+    mem_limit: 256m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
   mongodb:
     image: mongo:7.0.11
     container_name: mongo
